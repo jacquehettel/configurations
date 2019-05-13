@@ -1,0 +1,82 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.codec_georgia_counties.field_codec_avg_pct_suit_roof
+    - field.field.taxonomy_term.codec_georgia_counties.field_codec_pop_median_income
+    - field.field.taxonomy_term.codec_georgia_counties.field_codec_pop_total
+    - taxonomy.vocabulary.codec_georgia_counties
+  module:
+    - taxonomy
+label: 'County Import'
+id: county_import
+description: ''
+import_period: 3600
+fetcher: upload
+fetcher_configuration:
+  allowed_extensions: 'txt csv tsv xml opml'
+  directory: 'public://feeds'
+parser: csv
+parser_configuration:
+  delimiter: ','
+  no_headers: false
+  line_limit: 100
+processor: 'entity:taxonomy_term'
+processor_configuration:
+  update_existing: 2
+  update_non_existent: _keep
+  expire: -1
+  skip_hash_check: false
+  values:
+    vid: codec_georgia_counties
+  owner_id: 0
+  authorize: false
+  owner_feed_author: false
+custom_sources:
+  county:
+    label: county
+    value: county
+    machine_name: county
+  avg_pct_suitable:
+    label: avg-pct-suitable
+    value: avg-pct-suitable
+    machine_name: avg_pct_suitable
+  med_income_:
+    label: 'med-income '
+    value: 'med-income '
+    machine_name: med_income_
+  county_imp:
+    label: county
+    value: county
+    machine_name: county_imp
+  avg_pct_suitable_imp:
+    label: avg-pct-suitable
+    value: avg-pct-suitable
+    machine_name: avg_pct_suitable_imp
+  med_income_imp:
+    label: 'med-income '
+    value: 'med-income '
+    machine_name: med_income_imp
+  pop_tot:
+    label: pop-tot
+    value: pop-tot
+    machine_name: pop_tot
+mappings:
+  -
+    target: name
+    map:
+      value: county_imp
+    unique:
+      value: '1'
+  -
+    target: field_codec_avg_pct_suit_roof
+    map:
+      value: avg_pct_suitable_imp
+  -
+    target: field_codec_pop_median_income
+    map:
+      value: med_income_imp
+  -
+    target: field_codec_pop_total
+    map:
+      value: pop_tot
